@@ -38,11 +38,10 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
     event.preventDefault()
-    
-    const submitedData = JSON.parse(localStorage.getItem('feedback-form-state'))
-    if (!submitedData) {
-        return alert("Please, fill in the fields!")
+    if (inputEmail.value === "" || inputMessage.value === "") {
+        return alert("Please, fill in all the fields!")
     }
+    const submitedData = JSON.parse(localStorage.getItem('feedback-form-state'))
     console.log(submitedData)
     //localStorage.clear(); //опасно так чистить хранилище, так как может затронуть записи сделанные другими разработчиками проекта
     localStorage.removeItem('feedback-form-state');
