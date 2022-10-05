@@ -6,7 +6,7 @@ const form = document.querySelector('form')
 const inputEmail = document.querySelector('input')
 const inputMessage = document.querySelector('textarea')
 
-const formData = {}
+let formData = {}
 //При загрузке страницы проверяй состояние хранилища, и если там есть сохраненные данные, 
 //заполняй ими поля формы.В противном случае поля должны быть пустыми.
 checkLocalStorage()
@@ -25,6 +25,12 @@ function checkLocalStorage() {
 // Пусть ключом для хранилища будет строка "feedback-form-state".
 form.addEventListener('input', throttle(onFormInput, 500) );
 function onFormInput(event) {
+    const dataFilledBefore = JSON.parse(localStorage.getItem('feedback-form-state'));
+    if (dataFilledBefore) {
+        dataFilledBefore[event.target.name] = event.target.value;
+        localStorage.setItem('feedback-form-state', JSON.stringify(dataFilledBefore));
+        return;
+    };
     //console.log(event.target.name) //'email' OR 'message'
     //console.log(event.target.value) //data typed in inputs
     formData[event.target.name] = event.target.value //adding data to object formData
@@ -42,10 +48,11 @@ function onFormSubmit(event) {
         return alert("Please, fill in all the fields!")
     }
     const submitedData = JSON.parse(localStorage.getItem('feedback-form-state'))
-    console.log(submitedData)
+    console.log(submitedData)  
     //localStorage.clear(); //опасно так чистить хранилище, так как может затронуть записи сделанные другими разработчиками проекта
     localStorage.removeItem('feedback-form-state');
     form.reset()
+     formData = {}   
 }
 
 
